@@ -34,21 +34,21 @@ if (!process.env.GENESYS_SECRET_TOKEN) {
   process.exit(1);
 }
 
-// VONAGE
-/* const VONAGE_API_KEY = process.env.VONAGE_API_KEY;
-const VONAGE_API_SECRET = process.env.VONAGE_API_SECRET;
-const VONAGE_APPLICATION_ID = process.env.VONAGE_APPLICATION_ID;
-const VONAGE_APPLICATION_PRIVATE_KEY_PATH =
-  process.env.VONAGE_APPLICATION_PRIVATE_KEY_PATH;
+// Sinch
+/* const Sinch_API_KEY = process.env.Sinch_API_KEY;
+const Sinch_API_SECRET = process.env.Sinch_API_SECRET;
+const Sinch_APPLICATION_ID = process.env.Sinch_APPLICATION_ID;
+const Sinch_APPLICATION_PRIVATE_KEY_PATH =
+  process.env.Sinch_APPLICATION_PRIVATE_KEY_PATH;
 const VIRTUAL_NUMBER = process.env.VIRTUAL_NUMBER;
 
-if (!VONAGE_API_KEY || !VONAGE_API_SECRET) {
-  console.log('VONAGE_API_KEY or VONAGE_API_SECRET missing');
+if (!Sinch_API_KEY || !Sinch_API_SECRET) {
+  console.log('Sinch_API_KEY or Sinch_API_SECRET missing');
   process.exit(1);
 }
-if (!VONAGE_APPLICATION_ID || !VONAGE_APPLICATION_PRIVATE_KEY_PATH) {
+if (!Sinch_APPLICATION_ID || !Sinch_APPLICATION_PRIVATE_KEY_PATH) {
   console.log(
-    'VONAGE_APPLICATION_ID or VONAGE_APPLICATION_PRIVATE_KEY_PATH missing'
+    'Sinch_APPLICATION_ID or Sinch_APPLICATION_PRIVATE_KEY_PATH missing'
   );
   process.exit(1);
 }
@@ -57,13 +57,13 @@ if (!VIRTUAL_NUMBER) {
   process.exit(1);
 }
 
-const Vonage = require('@vonage/server-sdk');
+const Sinch = require('@Sinch/server-sdk');
 
-const vonage = new Vonage({
-  apiKey: VONAGE_API_KEY,
-  apiSecret: VONAGE_API_SECRET,
-  applicationId: VONAGE_APPLICATION_ID,
-  privateKey: VONAGE_APPLICATION_PRIVATE_KEY_PATH,
+const Sinch = new Sinch({
+  apiKey: Sinch_API_KEY,
+  apiSecret: Sinch_API_SECRET,
+  applicationId: Sinch_APPLICATION_ID,
+  privateKey: Sinch_APPLICATION_PRIVATE_KEY_PATH,
 }); */
 
 // GENESYS
@@ -124,10 +124,10 @@ fetch(`https://login.${environment}/oauth/token`, {
   })
   .catch((e) => console.error(e));
 
-// SEND SMS TO VONAGE
-const sendToVonage = async (data) => {
-  // console.log('sendToVonage DATA: ', data);
-  await vonage.channel.send(
+// SEND TO Sinch
+const sendTo = async (data) => {
+  console.log("sendToSinch DATA: ", data);
+  /* await Sinch.channel.send(
     { type: "sms", number: data.channel.to.id }, // TO_NUMBER
     { type: "sms", number: VIRTUAL_NUMBER }, // FROM_NUMBER
     {
@@ -141,18 +141,18 @@ const sendToVonage = async (data) => {
         console.error(err);
       } else {
         console.log(
-          `\n✅ Vonage successfully received the message, UUID: ${data.message_uuid}`,
+          `\n✅ Sinch successfully received the message, UUID: ${data.message_uuid}`,
         );
       }
     },
-  );
+  ); */
 };
 
 /*****************************************************************
  * This route is used when Genesys sends a message to the end user
  */
 app.post("/messageFromGenesys", (req, res) => {
-  console.log(`\n🚀 Genesys is sending a message to Vonage`);
+  console.log(`\n🚀 Genesys is sending a message to Sinch`);
   // verify message signature
   const normalizedMessage = req.body;
   const signature = req.headers["x-hub-signature-256"];
@@ -164,7 +164,7 @@ app.post("/messageFromGenesys", (req, res) => {
   if (`sha256=${messageHash}` === signature) {
     // console.log('\n/messageFromGenesys req.body\n', req.body); // Call your action on the request here
     // GENESYS AGENT SMS TO LVN
-    sendToVonage(req.body);
+    sendToSinch(req.body);
   } else {
     console.log("\nWebhook Validation Failed!");
   }
@@ -249,7 +249,7 @@ function sendToGenesys(data) {
   }
 }
 
-// VONAGE
+// Sinch
 app.post("/webhooks/status", (req, res) => {
   //console.log(req.body);
   console.log(`\n🚀 Sinch is sending a status update to Genesys`);
