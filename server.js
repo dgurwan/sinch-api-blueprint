@@ -225,7 +225,7 @@ function sendToGenesys(data) {
       time: d.toISOString(),
     },
     type: "Text",
-    text: data.message.contact_message.text_message,
+    text: "Message reçu de Sinch", //data.message.contact_message.text_message,
     direction: "Inbound",
   });
 
