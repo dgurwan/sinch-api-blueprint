@@ -125,8 +125,18 @@ fetch(`https://login.${environment}/oauth/token`, {
   .catch((e) => console.error(e));
 
 // SEND TO Sinch
-const sendTo = async (data) => {
+const sendToSinch = async (data) => {
   console.log("sendToSinch DATA: ", data);
+
+  const requestData = {
+    sendSMSRequestBody: {
+      type: "mt_text",
+      from,
+      to: [recipient],
+      body,
+    },
+  };
+
   /* await Sinch.channel.send(
     { type: "sms", number: data.channel.to.id }, // TO_NUMBER
     { type: "sms", number: VIRTUAL_NUMBER }, // FROM_NUMBER
@@ -176,7 +186,7 @@ app.post("/messageFromGenesys", (req, res) => {
  */
 app.post("/messageToGenesys", (req, res) => {
   try {
-    console.log(`\n🚀 Sinch is sending a message to Genesys`);
+    console.log(`\n🚀 Sinch is sending a message to Genesys : `, req.body);
     sendToGenesys(req.body);
   } catch (error) {
     console.log(error);
@@ -215,7 +225,7 @@ function sendToGenesys(data) {
       time: d.toISOString(),
     },
     type: "Text",
-    text: "message", //data.message.content.text,
+    text: data,
     direction: "Inbound",
   });
 
