@@ -186,7 +186,7 @@ app.post("/messageFromGenesys", (req, res) => {
  */
 app.post("/messageToGenesys", (req, res) => {
   try {
-    console.log(`\n🚀 Sinch is sending a message to Genesys : `, req.body);
+    console.log(`\n🚀 Sinch is sending a message to Genesys`);
     sendToGenesys(req.body);
   } catch (error) {
     console.log(error);
@@ -198,7 +198,6 @@ app.post("/messageToGenesys", (req, res) => {
  * Implement the code to send a message to Genesys Open Messaging API
  */
 function sendToGenesys(data) {
-  console.log("sendToGenesys DATA: ", data);
   if (data.message === "") {
     console.log("\nNo message to send");
     return;
@@ -226,7 +225,7 @@ function sendToGenesys(data) {
       time: d.toISOString(),
     },
     type: "Text",
-    text: "Message reçu de Sinch", //data.message.contact_message.text_message,
+    text: "message", //data.message.content.text,
     direction: "Inbound",
   });
 
