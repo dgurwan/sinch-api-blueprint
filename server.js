@@ -198,6 +198,7 @@ app.post("/messageToGenesys", (req, res) => {
  * Implement the code to send a message to Genesys Open Messaging API
  */
 function sendToGenesys(data) {
+  console.log("sendToGenesys DATA: ", data);
   if (data.message === "") {
     console.log("\nNo message to send");
     return;
