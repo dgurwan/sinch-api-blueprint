@@ -225,7 +225,7 @@ function sendToGenesys(data) {
       time: d.toISOString(),
     },
     type: "Text",
-    text: data,
+    text: data.message.contact_message.text_message,
     direction: "Inbound",
   });
 
