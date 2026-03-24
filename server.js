@@ -126,7 +126,7 @@ fetch(`https://login.${environment}/oauth/token`, {
 
 // SEND TO Sinch
 const sendToSinch = async (data) => {
-  console.log("sendToSinch DATA: ", data);
+  console.log("sendToSinch DATA: ", JSON.stringify(data));
 
   const requestData = {
     sendSMSRequestBody: {
@@ -198,6 +198,8 @@ app.post("/messageToGenesys", (req, res) => {
  * Implement the code to send a message to Genesys Open Messaging API
  */
 function sendToGenesys(data) {
+  console.log("sendToGenesys DATA: ", JSON.stringify(data));
+
   if (data.message === "") {
     console.log("\nNo message to send");
     return;
